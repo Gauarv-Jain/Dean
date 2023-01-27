@@ -1,0 +1,33 @@
+h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* table ka css */
+table {
+    width: 80%;
+    margin: auto; /* center the table */
+    border-collapse: collapse;
+    background-color: #333; /* dark theme */
+    color: #fff;
+  }
+  
+  th {
+    background-color: #444; /* dark theme */
+    font-size: 1.2em;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  td {
+    font-size: 1.2em;
+    padding: 8px;
+    border-bottom: 1px solid #555; /* dark theme */
+  }
+  
+  /* hover effect */
+  tr:hover {
+    background-color: #555; /* dark theme */
+  }
+  
