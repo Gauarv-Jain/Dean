@@ -1,0 +1,352 @@
+<?php if($cource_bool=="true"){
+    echo '
+    <form method="post">
+        <label for="subname">Subject name:</label>
+        <input type="text" id="subname" name="subname" value=""><br>
+        <label for="subcode">Sublect code:</label>
+        <input type="number" id="subcode" name="subcode" value=""><br><br>
+        
+
+        <input type="radio" id="B.Tech" name="program" value="B.Tech">
+        <label for="B.Tech">B.Tech</label>
+        <input type="radio" id="M.Tech" name="program" value="M.Tech">
+        <label for="M.Tech">M.Tech</label>
+        <input type="radio" id="MCA" name="program" value="MCA">
+        <label for="MCA">MCA</label>
+        <input type="radio" id="PhD" name="program" value="PhD">
+        <label for="PhD">PhD</label><br>
+
+        
+        <input type="radio" id="Lab" name="type" value="Lab">
+        <label for="Lab">Lab</label>
+        <input type="radio" id="Theory" name="type" value="Theory">
+        <label for="Theory">Theory</label><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    ';
+} ?>
+
+
+<?php 
+    if($grade_bool=="true"){
+        echo '
+        <form method="post">
+            <label for="stu_id">Student ID:</label>
+            <input type="numbe" id="stu_id" name="stu_id" value=""><br>
+            <label for="subcode">Sublect code:</label>
+            <input type="number" id="subcode" name="subcode" value=""><br><br>
+        
+            <input type="radio" id="Lab" name="type" value="lab">
+            <label for="Lab">Lab</label>
+            <input type="radio" id="Theory" name="type" value="theory">
+            <label for="Theory">Theory</label><br>
+        
+            <label for="m1">M1:</label>
+            <input type="number" id="m1" name="m1" value=""><br><br>
+            <label for="m2">M2:</label>
+            <input type="number" id="m2" name="m2" value=""><br><br>
+            <label for="m3">M3:</label>
+            <input type="number" id="m3" name="m3" value=""><br><br>
+        
+            <input type="submit" name="grabut" value="Submit">
+        </form>
+        ';
+    } 
+?>
+
+
+Error: MySQL shutdown unexpectedly.
+This may be due to a blocked port, missing dependencies, 
+improper privileges, a crash, or a shutdown by another method.
+Press the Logs button to view error logs and check
+the Windows Event Viewer for more clues
+If you need more help, copy and post this
+entire log window on the forums
+
+//tables
+CREATE TABLE `dean`.`student` (`stu_id` INT(8) NOT NULL , `name` VARCHAR(40) NOT NULL , `program` ENUM( 'B.Tech', 'M.Tech','MCA','PhD') NOT NULL , PRIMARY KEY (`stu_id`)) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`result_theory` (`stu_id` INT NOT NULL , `sem` INT NOT NULL , `sub_code` INT NOT NULL , `m1` INT NULL , `m2` INT NULL , `m3` INT NULL , PRIMARY KEY (`stu_id`, `sem`, `sub_code`)) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`result_lab` (`stu_id` INT NOT NULL , `sem` INT NOT NULL , `sub_code` INT NOT NULL , `m1` INT NULL , `m2` INT NULL , PRIMARY KEY (`stu_id`, `sem`, `sub_code`)) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`prof` (`prof_id` INT NOT NULL , `sub_name` VARCHAR(40) NOT NULL , `sub_code` INT NOT NULL , `program` ENUM('B.Tech', 'M.Tech','MCA','PhD') NOT NULL , `type` ENUM('lab', 'theory') NOT NULL ) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`subject_lab` (`sub_code` INT NOT NULL , `m1` INT NOT NULL , `m2` INT NOT NULL , PRIMARY KEY (`sub_code`)) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`subject_theory` (`sub_code` INT NOT NULL , `m1` INT NOT NULL , `m2` INT NOT NULL , `m3` INT NOT NULL , PRIMARY KEY (`sub_code`)) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`admin` (`curr_sem` INT NOT NULL , `course_entry` ENUM('true','false') NOT NULL , `grade_entry` ENUM('true','false') NOT NULL ) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`result` (`stu_id` INT NOT NULL , `sem` INT NOT NULL , `sub_code` INT NOT NULL , `type` ENUM('lab','theory') NOT NULL , `m1` INT NOT NULL , `m2` INT NOT NULL , `m3` INT NULL DEFAULT NULL ) ENGINE = InnoDB;
+
+INSERT INTO student (stu_id, name, program)
+    VALUES (1, 'John Smith', 'B.Tech'),
+        (2, 'Jane Doe', 'M.Tech'),
+        (3, 'Bob Johnson', 'MCA'),
+        (4, 'Linda Williams', 'PhD'),
+        (5, 'Michael Brown', 'B.Tech'),
+        (6, 'Emily Davis', 'M.Tech'),
+        (7, 'Jacob Miller', 'MCA'),
+        (8, 'Amanda Rodriguez', 'PhD')
+        (31, 'John Doe', 'B.Tech'),
+        (32, 'Jane Smith', 'M.Tech'),
+        (33, 'Mark Johnson', 'MCA'),
+        (34, 'Emily Davis', 'PhD'),
+        (35, 'Michael Brown', 'B.Tech'),
+        (36, 'Jessica Wilson', 'M.Tech'),
+        (37, 'Matthew Moore', 'MCA'),
+        (38, 'Ashley Taylor', 'PhD'),
+        (39, 'Jacob Anderson', 'B.Tech'),
+        (40, 'Emily Thomas', 'M.Tech'),
+        (41, 'Joshua Jackson', 'MCA'),
+        (42, 'Amanda White', 'PhD'),
+        (43, 'Daniel Harris', 'B.Tech'),
+        (44, 'Susan Martin', 'M.Tech'),
+        (45, 'Jacob Thompson', 'MCA'),
+        (46, 'Emily Garcia', 'PhD'),
+        (47, 'Michael Martinez', 'B.Tech'),
+        (48, 'Jessica Robinson', 'M.Tech'),
+        (49, 'Matthew Lewis', 'MCA'),
+        (50, 'Ashley Walker', 'PhD'),
+        (51, 'Jacob Perez', 'B.Tech'),
+        (52, 'Emily Hall', 'M.Tech'),
+        (53, 'Joshua Allen', 'MCA')
+
+
+INSERT INTO result_theory (stu_id, sem, sub_code, m1, m2, m3)
+VALUES (3, 1, 101, 30, 40, 20),
+       (3, 1, 102, 25, 20, 30),
+       (3, 2, 201, 35, 25, 20),
+       (3, 2, 202, 40, 30, 25),
+       (4, 1, 101, 20, 25, 35),
+       (4, 1, 102, 15, 20, 25),
+       (4, 2, 201, 25, 20, 15),
+       (4, 2, 202, 30, 25, 20);
+
+
+
+INSERT INTO result_theory (stu_id, sem, sub_code, m1, m2, m3)
+VALUES (5, 1, 101, 15, 20, 25),
+       (5, 1, 102, 20, 25, 30),
+       (5, 2, 201, 25, 30, 35),
+       (5, 2, 202, 30, 35, 40),
+       (6, 1, 101, 35, 40, 25),
+       (6, 1, 102, 40, 25, 30),
+       (6, 2, 201, 25, 30, 35),
+       (6, 2, 202, 30, 35, 40),
+       (7, 1, 101, 20, 25, 35),
+       (7, 1, 102, 25, 30, 40),
+       (7, 2, 201, 30, 35, 25),
+       (7, 2, 202, 35, 40, 30),
+       (8, 1, 101, 25, 30, 25),
+       (8, 1, 102, 30, 25, 30),
+       (8, 2, 201, 35, 30, 25),
+       (8, 2, 202, 40, 35, 30),
+       (9, 1, 101, 20, 25, 30),
+       (9, 1, 102, 25, 30, 35),
+       (9, 2, 201, 30, 35, 20),
+       (9, 2, 202, 35, 20, 25),
+       (10, 1, 101, 25, 20, 25),
+       (10, 1, 102, 30, 25, 20),
+       (10, 2, 201, 35, 30, 25),
+       (10, 2, 202, 40, 35, 30),
+       (11, 1, 101, 15, 20, 25),
+       (11, 1, 102, 20, 25, 30),
+       (11, 2, 201, 25, 30, 35),
+       (11, 2, 202, 30, 35, 40);
+
+
+INSERT INTO result_lab (stu_id, sem, sub_code, m1, m2)
+VALUES (1, 1, 101, 80, 15),
+       (1, 1, 102, 25, 45),
+       (1, 2, 201, 35, 50),
+       (1, 2, 202, 40, 30),
+       (2, 1, 101, 70, 25),
+       (2, 1, 102, 30, 40),
+       (2, 2, 201, 60, 20),
+       (2, 2, 202, 30, 25),
+       (3, 1, 101, 25, 50),
+       (3, 1, 102, 30, 40),
+       (3, 2, 201, 35, 30),
+       (3, 2, 202, 40, 25),
+       (4, 1, 101, 20, 35),
+       (4, 1, 102, 25, 30),
+       (4, 2, 201, 30, 25),
+       (4, 2, 202, 35, 20),
+       (5, 1, 101, 25, 30),
+       (5, 1, 102, 30, 25),
+       (5, 2, 201, 35, 20),
+       (5, 2, 202, 40, 15),
+       (6, 1, 101, 30, 25),
+       (6, 1, 102, 25, 30),
+       (6, 2, 201, 20, 35),
+       (6, 2, 202, 15, 40),
+       (7, 1, 101, 25, 30),
+       (7, 1, 102, 30, 25),
+       (7, 2, 201, 35, 20),
+       (7, 2, 202, 40, 15),
+       (8, 1, 101, 15, 40),
+       (8, 1, 102, 20, 35),
+       (8, 2, 201, 25, 30),
+       (8, 2, 202, 30, 25),
+       (9, 1, 101, 35, 20),
+       (9, 1, 102, 40, 15),
+       (9, 2, 201, 25, 30)
+
+
+INSERT INTO prof (prof_id, sub_name, sub_code, program, type)
+VALUES (1, 'Data Structures', 101, 'B.Tech', 'theory'),
+       (2, 'Algorithms', 102, 'B.Tech', 'theory'),
+       (3, 'Operating Systems', 201, 'B.Tech', 'theory'),
+       (4, 'Computer Networks', 202, 'B.Tech', 'theory'),
+       (5, 'Database Systems', 301, 'B.Tech', 'theory'),
+       (6, 'Software Engineering', 302, 'B.Tech', 'theory'),
+       (7, 'Theory of Computation', 401, 'B.Tech', 'theory'),
+       (8, 'Compiler Design', 402, 'B.Tech', 'theory'),
+       (9, 'Computer Architecture', 501, 'B.Tech', 'theory'),
+       (10, 'Artificial Intelligence', 502, 'B.Tech', 'theory'),
+       (11, 'Data Mining', 601, 'B.Tech', 'theory'),
+       (12, 'Machine Learning', 602, 'B.Tech', 'theory'),
+       (13, 'Big Data', 701, 'B.Tech', 'theory'),
+       (14, 'Cloud Computing', 702, 'B.Tech', 'theory'),
+       (15, 'Computer Graphics', 801, 'B.Tech', 'theory'),
+       (16, 'Human Computer Interaction', 802, 'B.Tech', 'theory'),
+       (17, 'Lab- Data Structures', 101, 'B.Tech', 'lab'),
+       (18, 'Lab- Algorithms', 102, 'B.Tech', 'lab'),
+       (19, 'Lab- Operating Systems', 201, 'B.Tech', 'lab'),
+       (20, 'Lab- Computer Networks', 202, 'B.Tech', 'lab'),
+       (21, 'Lab- Database Systems', 301, 'B.Tech', 'lab'),
+       (22, 'Lab- Software Engineering', 302, 'B.Tech', 'lab')
+
+
+INSERT INTO result_lab (stu_id, sem, sub_code, m1, m2)
+VALUES (15, 1, 101, NULL, NULL),
+       (15, 1, 102, NULL, NULL),
+       (15, 2, 201, NULL, NULL),
+       (15, 2, 202, NULL, NULL),
+       (25, 1, 101, NULL, NULL),
+       (25, 1, 102, NULL, NULL),
+       (25, 2, 201, NULL, NULL),
+       (25, 2, 202, NULL, NULL),
+       (35, 1, 101, NULL, NULL),
+       (35, 1, 102, NULL, NULL),
+       (35, 2, 201, NULL, NULL),
+       (35, 2, 202, NULL, NULL),
+       (45, 1, 101, NULL, NULL),
+       (45, 1, 102, NULL, NULL),
+       (45, 2, 201, NULL, NULL),
+       (45, 2, 202, NULL, NULL),
+       (55, 1, 101, NULL, NULL),
+       (55, 1, 102, NULL, NULL)
+
+
+INSERT INTO result_theory (stu_id, sem, sub_code, m1, m2, m3)
+VALUES (16, 1, 101, NULL, NULL, NULL),
+       (16, 1, 102, NULL, NULL, NULL),
+       (16, 2, 201, NULL, NULL, NULL),
+       (16, 2, 202, NULL, NULL, NULL),
+       (26, 1, 101, NULL, NULL, NULL),
+       (26, 1, 102, NULL, NULL, NULL),
+       (26, 2, 201, NULL, NULL, NULL),
+       (26, 2, 202, NULL, NULL, NULL),
+       (36, 1, 101, NULL, NULL, NULL),
+       (36, 1, 102, NULL, NULL, NULL),
+       (36, 2, 201, NULL, NULL, NULL),
+       (36, 2, 202, NULL, NULL, NULL),
+       (46, 1, 101, NULL, NULL, NULL),
+       (46, 1, 102, NULL, NULL, NULL),
+       (46, 2, 201, NULL, NULL, NULL),
+       (46, 2, 202, NULL, NULL, NULL),
+       (56, 1, 101, NULL, NULL, NULL),
+       (56, 1, 102, NULL, NULL, NULL),
+       (56, 2, 201, NULL, NULL, NULL),
+       (56, 2, 202, NULL, NULL, NULL)
+
+
+INSERT INTO result (stu_id, sem, sub_code, type, m1, m2, m3)
+VALUES (5, 1, 101, 'theory', 15, 20, 25),
+       (5, 2, 201, 'theory', 25, 30, 35),
+       (5, 1, 102, 'theory', 20, 25, 30),
+       (5, 2, 202, 'theory', 30, 35, 40),
+       (6, 1, 101, 'theory', 35, 40, 25),
+       (6, 1, 102, 'theory', 40, 25, 30),
+       (6, 2, 201, 'theory', 25, 30, 35),
+       (6, 2, 202, 'theory', 30, 35, 40),
+       (7, 1, 101, 'theory', 20, 25, 35),
+       (7, 1, 102, 'theory', 25, 30, 40),
+       (7, 2, 201, 'theory', 30, 35, 25),
+       (7, 2, 202, 'theory', 35, 40, 30),
+       (8, 1, 101, 'theory', 25, 30, 25),
+       (8, 1, 102, 'theory', 30, 25, 30),
+       (8, 2, 201, 'theory', 35, 30, 25),
+       (8, 2, 202, 'theory', 40, 35, 30),
+       (9, 1, 101, 'theory', 20, 25, 30),
+       (9, 1, 102, 'theory', 25, 30, 35),
+       (9, 2, 201, 'theory', 30, 35, 20),
+       (9, 2, 202, 'theory', 35, 20, 25),
+       (10, 1, 101, 'theory', 25, 20, 25),
+       (10, 1, 102, 'theory', 30, 25, 20),
+       (10, 2, 201, 'theory', 35, 30, 25),
+       (10, 2, 202, 'theory', 40, 35, 30),
+       (11, 1, 101, 'theory', 15, 20, 25),
+       (11, 1, 102, 'theory', 20, 25, 30),
+       (11, 2, 201, 'theory', 25, 30, 35),
+       (11, 2, 202, 'theory', 30, 35, 40);
+
+
+INSERT INTO result (stu_id, sem, sub_code, type, m1, m2)
+VALUES (1, 1, 101, 'lab', 80, 15),
+       (1, 1, 102, 'lab', 25, 45),
+       (1, 2, 201, 'lab', 35, 50),
+       (1, 2, 202, 'lab', 40, 30),
+       (2, 1, 101, 'lab', 70, 25),
+       (2, 1, 102, 'lab', 30, 40),
+       (2, 2, 201, 'lab', 60, 20),
+       (2, 2, 202, 'lab', 30, 25),
+       (3, 1, 101, 'lab', 25, 50),
+       (3, 1, 102, 'lab', 30, 40),
+       (3, 2, 201, 'lab', 35, 30),
+       (3, 2, 202, 'lab', 40, 25),
+       (4, 1, 101, 'lab', 20, 35),
+       (4, 1, 102, 'lab', 25, 30),
+       (4, 2, 201, 'lab', 30, 25),
+       (4, 2, 202, 'lab', 35, 20),
+       (5, 1, 101, 'lab', 25, 30),
+       (5, 1, 102, 'lab', 30, 25),
+       (5, 2, 201, 'lab', 35, 20),
+       (5, 2, 202, 'lab', 40, 15),
+       (6, 1, 101, 'lab', 30, 25),
+       (6, 1, 102, 'lab', 25, 30),
+       (6, 2, 201, 'lab', 20, 35),
+       (6, 2, 202, 'lab', 15, 40),
+       (7, 1, 101, 'lab', 25, 30),
+       (7, 1, 102, 'lab', 30, 25),
+       (7, 2, 201, 'lab', 35, 20),
+       (7, 2, 202, 'lab', 40, 15),
+       (8, 1, 101, 'lab', 15, 40),
+       (8, 1, 102, 'lab', 20, 35),
+       (8, 2, 201, 'lab', 25, 30),
+       (8, 2, 202, 'lab', 30, 25),
+       (9, 1, 101, 'lab', 35, 20),
+       (9, 1, 102, 'lab', 40, 15),
+       (9, 2, 201, 'lab', 25, 30)
+
+
+INSERT INTO `prof` (`prof_id`, `sub_name`, `sub_code`, `program`, `type`) VALUES
+(1, 'Computer Science', 101, 'B.Tech', 'theory'),
+(2, 'Database Systems', 102, 'B.Tech', 'theory'),
+(3, 'Data Structures', 103, 'B.Tech', 'theory'),
+(4, 'Computer Networks', 104, 'B.Tech', 'lab'),
+(5, 'Operating Systems', 105, 'B.Tech', 'theory'),
+(6, 'Algorithms', 106, 'B.Tech', 'theory'),
+(7, 'Artificial Intelligence', 107, 'M.Tech', 'theory'),
+(8, 'Advanced Database Systems', 108, 'M.Tech', 'theory'),
+(9, 'Machine Learning', 109, 'M.Tech', 'theory'),
+(10, 'Computer Vision', 110, 'M.Tech', 'theory'),
+(11, 'Natural Language Processing', 111, 'PhD', 'theory'),
+(12, 'Quantum Computing', 112, 'PhD', 'theory'),
+(13, 'Neural Networks', 113, 'PhD', 'theory'),
+(14, 'Computer Graphics', 114, 'MCA', 'theory'),
+(15, 'Software Engineering', 115, 'MCA', 'theory');
