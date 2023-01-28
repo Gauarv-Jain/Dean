@@ -67,12 +67,7 @@
                 }
             }
 
-            $sql1 = "INSERT INTO `prof` (prof_id, sub_name, sub_code, program, type) VALUES ($prof_id, ?, $subcode, '$program', '$type');";
-            if($type == "Theory"){
-                $sql2 = "INSERT INTO `subject_theory` (sub_code, m1, m2, m3) VALUES ($subcode, $m1, $m2, $m3);";
-            }else{
-                $sql2 = "INSERT INTO `subject_lab` (sub_code, m1, m2) VALUES ($subcode, $m1, $m2);";
-            }
+            $sql1 = "INSERT INTO `prof` (prof_id, sub_name, sub_code, program, sem, type, m1, m2, m3) VALUES ($prof_id, ?, $subcode, '$program', $sem, '$type', $m1, $m2, $m3);";
 
             //inserting into the prof table
             $stmt = mysqli_stmt_init($conn);
@@ -83,17 +78,6 @@
                 mysqli_stmt_bind_param($stmt, "s", $subname);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_store_result($stmt);
-            }
-
-            //inserting in the subject table
-            if (mysqli_query($conn, $sql2)) {
-                echo '<script>alert("Subject added")</script>';
-                exit();
-            } else {
-                //echo "Error updating record: " . mysqli_error($conn);
-                $error = mysqli_error($conn);
-                echo "<script>alert(Error updating record:" . $error .")</script>";
-                exit();
             }
 
         }
@@ -142,7 +126,7 @@
 
         //checking if the subject exists and if it does make a query to inser the result 
         if($type == "theory"){
-            $sq2 = "SELECT * FROM subject_theory WHERE sub_code = $subcode";
+            $sq2 = "SELECT * FROM prof WHERE sub_code = $subcode";
             $result = mysqli_query($conn, $sq2);
             $rowCount = mysqli_num_rows($result);
             if ($rowCount > 0) {
@@ -162,7 +146,7 @@
 
             $sql1 = "INSERT INTO `result` (stu_id, sem, sub_code, type, m1, m2, m3) VALUES ($stu_id, $sem, $subcode, '$type', $m1, $m2, $m3);";
         }else{
-            $sq2 = "SELECT * FROM subject_lab WHERE sub_code = $subcode";
+            $sq2 = "SELECT * FROM prof WHERE sub_code = $subcode";
             $result = mysqli_query($conn, $sq2);
             $rowCount = mysqli_num_rows($result);
             if ($rowCount > 0) {
@@ -193,83 +177,110 @@
     }
 ?>
 
+<!-- script for the hiding of the M3 block -->
+<script type="text/javascript">
+    //for subject form
+    function getValue(x) {
+    if(x.value == 'lab'){
+        document.getElementById("m3").style.display = 'none'; // you need a identifier for changes
+        document.getElementById("lablem3").style.display = 'none';
+    }
+    else{
+        document.getElementById("m3").style.display = 'block';  // you need a identifier for changes
+        document.getElementById("lablem3").style.display = 'block';
+    }
+    }
+
+    //for grade form
+    function getValu(x) {
+    if(x.value == 'lab'){
+        document.getElementById("gm3").style.display = 'none'; // you need a identifier for changes
+        document.getElementById("glablem3").style.display = 'none';
+    }
+    else{
+        document.getElementById("gm3").style.display = 'block';  // you need a identifier for changes
+        document.getElementById("glablem3").style.display = 'block';
+    }
+    }
+</script>
+
 <!-- subject entry form  -->
 <?php if($cource_bool=="true"){echo '
-<form class="flex flex-wrap justify-center items-center gap-2" method="post">
-    <label class="self-center" for="subname">Subject name:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="text" id="subname" name="ssubname" value="">
-    <label class="self-center" for="subcode">Sublect code:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="ssubcode" value="">
-    
-    <div>
+    <form class="flex flex-wrap justify-center items-center gap-2" method="post">
+        <label class="self-center" for="subname">Subject name:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="text" id="subname" name="ssubname" value="">
+        <label class="self-center" for="subcode">Sublect code:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="ssubcode" value="">
+        
         <div>
-            <input type="radio" id="B.Tech" name="sprogram" value="B.Tech" checked>
-            <label class="self-center" for="B.Tech">B.Tech</label>
+            <div>
+                <input type="radio" id="B.Tech" name="sprogram" value="B.Tech" checked>
+                <label class="self-center" for="B.Tech">B.Tech</label>
+            </div>
+            <div>
+                <input type="radio" id="M.Tech" name="sprogram" value="M.Tech">
+                <label class="self-center" for="M.Tech">M.Tech</label>
+            </div>
+            <div>
+                <input type="radio" id="MCA" name="sprogram" value="MCA">
+                <label class="self-center" for="MCA">MCA</label>
+            </div>
+            <div>
+                <input type="radio" id="PhD" name="sprogram" value="PhD">
+                <label class="self-center" for="PhD">PhD</label><br>
+            </div>
         </div>
-        <div>
-            <input type="radio" id="M.Tech" name="sprogram" value="M.Tech">
-            <label class="self-center" for="M.Tech">M.Tech</label>
-        </div>
-        <div>
-            <input type="radio" id="MCA" name="sprogram" value="MCA">
-            <label class="self-center" for="MCA">MCA</label>
-        </div>
-        <div>
-            <input type="radio" id="PhD" name="sprogram" value="PhD">
-            <label class="self-center" for="PhD">PhD</label><br>
-        </div>
-    </div>
 
-    <div>
         <div>
-            <input type="radio" id="Lab" name="stype" value="lab" checked>
-            <label class="self-center" for="Lab">Lab</label>
+            <div>
+                <input type="radio" id="Theory" name="stype" value="theory" checked onChange="getValue(this)">
+                <label class="self-center" for="Theory">Theory</label><br>
+            </div>
+            <div>
+                <input type="radio" id="Lab" name="stype" value="lab" onChange="getValue(this)">
+                <label class="self-center" for="Lab">Lab</label>
+            </div>
         </div>
-        <div>
-            <input type="radio" id="Theory" name="stype" value="theory">
-            <label class="self-center" for="Theory">Theory</label><br>
-        </div>
-    </div>
 
-    <label class="self-center" for="m1">M1:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="sm1" value="">
-    <label class="self-center" for="m2">M2:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="sm2" value="">
-    <label class="self-center" for="m3">M3:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m3" name="sm3" value="">
+        <label class="self-center" for="m1">M1:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="sm1" value="">
+        <label class="self-center" for="m2">M2:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="sm2" value="">
+        <label class="self-center" for="m3" id="lablem3">M3:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m3" name="sm3" value="">
 
-    <input class="rounded" type="submit" name="subbut" value="Submit">
-</form>
+        <input class="rounded" type="submit" name="subbut" value="Submit">
+    </form>
 ';} ?>
 
 <!-- grade entry form -->
 <?php if($grade_bool=="true"){echo '
-<form class="flex flex-wrap justify-center items-center gap-2" method="post">
-    <label class="self-center" for="stu_id">Student ID:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="stu_id" name="stu_id" value=""><br>
-    <label class="self-center" for="subcode">Sublect code:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="subcode" value=""><br><br>
+    <form class="flex flex-wrap justify-center items-center gap-2" method="post">
+        <label class="self-center" for="stu_id">Student ID:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="stu_id" name="stu_id" value=""><br>
+        <label class="self-center" for="subcode">Sublect code:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="subcode" value=""><br><br>
 
-    <div class="flex flex-col justify-center content-center">
-        <div>
-            <input type="radio" id="Lab" name="type" value="lab">
-            <label class="self-center rounded h-10" for="Lab">Lab</label>
+        <div class="flex flex-col justify-center content-center">
+            <div>
+                <input type="radio" id="Theory" name="type" value="theory" checked onChange="getValu(this)">
+                <label class="self-center rounded h-10" for="Theory">Theory</label><br>
+            </div>
+            <div>
+                <input type="radio" id="Lab" name="type" value="lab" onChange="getValu(this)">
+                <label class="self-center rounded h-10" for="Lab">Lab</label>
+            </div>
         </div>
-        <div>
-            <input type="radio" id="Theory" name="type" value="theory">
-            <label class="self-center rounded h-10" for="Theory">Theory</label><br>
-        </div>
-    </div>
 
-    <label class="self-center" for="m1">M1:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="m1" value=""><br><br>
-    <label class="self-center" for="m2">M2:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="m2" value=""><br><br>
-    <label class="self-center" for="m3">M3:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m3" name="m3" value=""><br><br>
+        <label class="self-center" for="m1">M1:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="m1" value=""><br><br>
+        <label class="self-center" for="m2">M2:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="m2" value=""><br><br>
+        <label class="self-center" for="m3" id="glablem3">M3:</label>
+        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="gm3" name="m3" value=""><br><br>
 
-    <input class="self-center rounded" type="submit" name="grabut" value="Submit">
-</form>
+        <input class="self-center rounded" type="submit" name="grabut" value="Submit">
+    </form>
 ';}?>
 
 <!-- list of cources/subjects the prof has  -->
@@ -280,6 +291,9 @@
         <th>Subject Code</th>
         <th>Program</th>
         <th>Type</th>
+        <th>M1</th>
+        <th>M2</th>
+        <th>M3</th>
     </tr>
     <?php 
     $sql = "SELECT * FROM prof WHERE prof_id=$prof_id";
@@ -287,7 +301,7 @@
 
     if($result->num_rows>0){
         while($row = $result->fetch_assoc()){
-            echo "<tr><td>".$row['sub_name'] . "</td><td>" . $row['sub_code'] . "</td><td>" . $row['program'] . "</td><td>" . $row['type'] . "</td></tr>" ;
+            echo "<tr><td>".$row['sub_name'] . "</td><td>" . $row['sub_code'] . "</td><td>" . $row['program'] . "</td><td>" . $row['type'] ."</td><td>" . $row['m1'] . "</td><td>" . $row['m2'] . "</td><td>" . $row['m3'] . "</td></tr>" ;
         }
     }
     ?>
