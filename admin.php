@@ -1,6 +1,4 @@
-<?php
-    require_once 'includes/header.php'
-?>
+<?php require_once 'includes/header.php' ?>
 
 <!-- initilizing values  -->
 <?php 
@@ -112,6 +110,7 @@
 
 <h2>Admin</h2>
 
+<!-- sem change, subject and grade toggler -->
 <form method="post">
 
     <label for="sem">Change sem:</label>
@@ -137,13 +136,14 @@
 
 </form>
 
+<!-- Prof who have not entered the marks -->
 <h2>Prof who have not entered the marks</h2>
 <table>
     <tr>
         <th>Prof Code</th>
     </tr>
     <?php 
-    $sql = "SELECT P.prof_ID FROM prof as P WHERE (SELECT COUNT(*) FROM result WHERE sem=$currentsem AND sub_code = P.sub_code ) != (SELECT COUNT(*) FROM student WHERE program = P.program)";
+    $sql = "SELECT DISTINCT P.prof_ID FROM prof as P WHERE (SELECT COUNT(*) FROM result WHERE sem=$currentsem AND sub_code = P.sub_code ) != (SELECT COUNT(*) FROM student WHERE program = P.program)";
     $result = $conn->query($sql);
 
     if($result->num_rows>0){
@@ -154,9 +154,7 @@
     ?>
 </table>
 
-<?php
-    require_once 'includes/footer.php'
-?>
+<?php require_once 'includes/footer.php' ?>
 
 
 

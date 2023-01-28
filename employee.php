@@ -1,6 +1,4 @@
-<?php
-    require_once 'includes/header.php'
-?>
+<?php require_once 'includes/header.php' ?>
 
 <!-- initilize -->
 <?php 
@@ -58,6 +56,17 @@
         }
         else{
 
+            //checking if the subject is alredy entered or not
+            $sq1 = "SELECT * FROM prof WHERE sub_code = $subcode";
+            $result = mysqli_query($conn, $sq1);
+            $rowCount = mysqli_num_rows($result);
+            if($rowCount != 0){
+                while ($row = mysqli_fetch_assoc($result)) {          
+                    echo '<script>alert("This subjects is alredy Entered by prof'. $row['prof_id'] .'")</script>';
+                    exit();
+                }
+            }
+
             $sql1 = "INSERT INTO `prof` (prof_id, sub_name, sub_code, program, type) VALUES ($prof_id, ?, $subcode, '$program', '$type');";
             if($type == "Theory"){
                 $sql2 = "INSERT INTO `subject_theory` (sub_code, m1, m2, m3) VALUES ($subcode, $m1, $m2, $m3);";
@@ -108,6 +117,9 @@
         else if($type == "Theory" && empty($m3)){
             echo '<script>alert("Pls fill all the fields")</script>';
             exit();
+        }else if($type == "Lab" && !empty($m3)){
+            echo '<script>alert("Lab subjects does not have a M3 field")</script>';
+            exit();
         }
 
         //checking if the student exists or not
@@ -116,6 +128,15 @@
         $rowCount = mysqli_num_rows($result);
         if($rowCount == 0){
             echo '<script>alert("No such student exists")</script>';
+            exit();
+        }
+
+        //checking if the prof has this pirticular subject
+        $sq1 = "SELECT * FROM prof WHERE prof_id=$prof_id AND sub_code=$subcode";
+        $result = mysqli_query($conn, $sq1);
+        $rowCount = mysqli_num_rows($result);
+        if($rowCount == 0){
+            echo '<script>alert("Not Your Subject")</script>';
             exit();
         }
 
@@ -172,12 +193,13 @@
     }
 ?>
 
+<!-- subject entry form  -->
 <?php if($cource_bool=="true"){echo '
-<form class="flex items-center gap-2" method="post">
+<form class="flex flex-wrap justify-center items-center gap-2" method="post">
     <label class="self-center" for="subname">Subject name:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="text" id="subname" name="ssubname" value="">
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="text" id="subname" name="ssubname" value="">
     <label class="self-center" for="subcode">Sublect code:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="subcode" name="ssubcode" value="">
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="ssubcode" value="">
     
     <div>
         <div>
@@ -210,22 +232,23 @@
     </div>
 
     <label class="self-center" for="m1">M1:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="m1" name="sm1" value="">
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="sm1" value="">
     <label class="self-center" for="m2">M2:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="m2" name="sm2" value="">
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="sm2" value="">
     <label class="self-center" for="m3">M3:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="m3" name="sm3" value="">
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m3" name="sm3" value="">
 
     <input class="rounded" type="submit" name="subbut" value="Submit">
 </form>
 ';} ?>
 
+<!-- grade entry form -->
 <?php if($grade_bool=="true"){echo '
-<form class="flex items-center gap-2" method="post">
+<form class="flex flex-wrap justify-center items-center gap-2" method="post">
     <label class="self-center" for="stu_id">Student ID:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="stu_id" name="stu_id" value=""><br>
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="stu_id" name="stu_id" value=""><br>
     <label class="self-center" for="subcode">Sublect code:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="subcode" name="subcode" value=""><br><br>
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="subcode" value=""><br><br>
 
     <div class="flex flex-col justify-center content-center">
         <div>
@@ -239,11 +262,11 @@
     </div>
 
     <label class="self-center" for="m1">M1:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="m1" name="m1" value=""><br><br>
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="m1" value=""><br><br>
     <label class="self-center" for="m2">M2:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="m2" name="m2" value=""><br><br>
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="m2" value=""><br><br>
     <label class="self-center" for="m3">M3:</label>
-    <input class="bg-gray-200 rounded h-10 hover:outline " type="number" id="m3" name="m3" value=""><br><br>
+    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m3" name="m3" value=""><br><br>
 
     <input class="self-center rounded" type="submit" name="grabut" value="Submit">
 </form>
@@ -270,6 +293,4 @@
     ?>
 </table>
 
-<?php
-    require_once 'includes/footer.php'
-?>
+<?php require_once 'includes/footer.php' ?>

@@ -1,6 +1,4 @@
-<?php
-    require_once 'includes/header.php'
-?>
+<?php require_once 'includes/header.php' ?>
 
 <!-- inilitize -->
 <?php 
@@ -118,12 +116,10 @@
 
     if($result->num_rows>0){
         while($row = $result->fetch_assoc()){
-            echo "<tr><td>".$row['sub_name'] . "</td><td>" . $row['sub_code'] . "</td><td>" . $row['type'] . "</td><td>" . $row['program'] . "</td></tr>" ;
+            echo "<tr><td>".$row['sub_name'] . "</td><td>" . $row['sub_code'] . "</td><td>" . $row['type'] . "</td><td>" . $row['prof_id'] . "</td></tr>" ;
         }
     }
     ?>
 </table>
 
-<?php
-    require_once 'includes/footer.php'
-?>
+<?php require_once 'includes/footer.php' ?>
