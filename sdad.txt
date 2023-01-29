@@ -350,3 +350,46 @@ INSERT INTO `prof` (`prof_id`, `sub_name`, `sub_code`, `program`, `type`) VALUES
 (13, 'Neural Networks', 113, 'PhD', 'theory'),
 (14, 'Computer Graphics', 114, 'MCA', 'theory'),
 (15, 'Software Engineering', 115, 'MCA', 'theory');
+
+
+<!-- grade entry form-->
+<?php if($grade_bool=="true"){echo '
+    <form class="grid font-bold" method="post">
+        <div class="flex flex-wrap justify-center items-center gap-2">
+            
+            <div>
+                <label class="self-center" for="stu_id">Student ID:</label>
+                <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="stu_id" name="stu_id" value=""><br>
+                <label class="self-center" for="subcode">Sublect code:</label>
+                <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="subcode" value=""><br><br>
+
+                <div class="flex flex-col justify-center content-center">
+                    <div>
+                        <input type="radio" id="Theory" name="type" value="theory" checked onChange="getValu(this)">
+                        <label class="self-center rounded h-10" for="Theory">Theory</label><br>
+                    </div>
+                    <div>
+                        <input type="radio" id="Lab" name="type" value="lab" onChange="getValu(this)">
+                        <label class="self-center rounded h-10" for="Lab">Lab</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <label class="self-center" for="m1">M1:</label>
+                <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="m1" value=""><br><br>
+                <label class="self-center" for="m2">M2:</label>
+                <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="m2" value=""><br><br>
+                <label class="self-center" for="m3" id="glablem3">M3:</label>
+                <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="gm3" name="m3" value=""><br><br>
+            </div>
+
+        </div>
+
+        <input class="rounded w-fit justify-self-center bg-green-600 hover:bg-green-800" type="submit" name="grabut" value="Submit">
+    </form>
+';}?> 
+
+
+sub_code: '<?php echo $GLOBALS['sub__code'] ; ?>',
+                type: '<?php echo $GLOBALS['type'] ; ?>',

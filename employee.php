@@ -206,82 +206,223 @@
 
 <!-- subject entry form  -->
 <?php if($cource_bool=="true"){echo '
-    <form class="flex flex-wrap justify-center items-center gap-2" method="post">
-        <label class="self-center" for="subname">Subject name:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="text" id="subname" name="ssubname" value="">
-        <label class="self-center" for="subcode">Sublect code:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="ssubcode" value="">
-        
-        <div>
-            <div>
-                <input type="radio" id="B.Tech" name="sprogram" value="B.Tech" checked>
-                <label class="self-center" for="B.Tech">B.Tech</label>
-            </div>
-            <div>
-                <input type="radio" id="M.Tech" name="sprogram" value="M.Tech">
-                <label class="self-center" for="M.Tech">M.Tech</label>
-            </div>
-            <div>
-                <input type="radio" id="MCA" name="sprogram" value="MCA">
-                <label class="self-center" for="MCA">MCA</label>
-            </div>
-            <div>
-                <input type="radio" id="PhD" name="sprogram" value="PhD">
-                <label class="self-center" for="PhD">PhD</label><br>
-            </div>
-        </div>
+    <form class="grid font-bold justify-center" method="post">
 
-        <div>
+        <div class="flex flex-wrap w-fit justify-center items-center m-2 p-4 bg-slate-300 rounded">
             <div>
-                <input type="radio" id="Theory" name="stype" value="theory" checked onChange="getValue(this)">
-                <label class="self-center" for="Theory">Theory</label><br>
-            </div>
-            <div>
-                <input type="radio" id="Lab" name="stype" value="lab" onChange="getValue(this)">
-                <label class="self-center" for="Lab">Lab</label>
-            </div>
-        </div>
+                <label class="self-center" for="subname">Subject name:</label>
+                <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="text" id="subname" name="ssubname" value="">
+                <label class="self-center" for="subcode">Sublect code:</label>
+                <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="ssubcode" value="">
+                
+                <div class="flex justify-around m-2">
+                    <div>
+                        <div>
+                            <input type="radio" id="B.Tech" name="sprogram" value="B.Tech" checked>
+                            <label class="self-center" for="B.Tech">B.Tech</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="M.Tech" name="sprogram" value="M.Tech">
+                            <label class="self-center" for="M.Tech">M.Tech</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="MCA" name="sprogram" value="MCA">
+                            <label class="self-center" for="MCA">MCA</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="PhD" name="sprogram" value="PhD">
+                            <label class="self-center" for="PhD">PhD</label><br>
+                        </div>
+                    </div>
 
-        <label class="self-center" for="m1">M1:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="sm1" value="">
-        <label class="self-center" for="m2">M2:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="sm2" value="">
-        <label class="self-center" for="m3" id="lablem3">M3:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m3" name="sm3" value="">
+                    <div>
+                        <div>
+                            <input type="radio" id="Theory" name="stype" value="theory" checked onChange="getValue(this)">
+                            <label class="self-center" for="Theory">Theory</label><br>
+                        </div>
+                        <div>
+                            <input type="radio" id="Lab" name="stype" value="lab" onChange="getValue(this)">
+                            <label class="self-center" for="Lab">Lab</label>
+                        </div>
+                    </div>
+                </div>
 
-        <input class="rounded" type="submit" name="subbut" value="Submit">
+            </div>
+
+            <div class="grid gap-2">
+                <div class="flex">
+                    <label class="self-center mx-2" for="m1">M1:</label>
+                    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="sm1" value="">
+                </div>
+
+                <div class="flex">
+                    <label class="self-center mx-2" for="m2">M2:</label>
+                    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="sm2" value="">
+                </div>
+
+                <div class="flex">
+                    <label class="self-center mx-2" for="m3" id="lablem3">M3:</label>
+                    <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m3" name="sm3" value="">
+                </div>
+            </div>
+
+        </div>   
+
+        <input class="rounded w-fit justify-self-center bg-green-600 hover:bg-green-800" type="submit" name="subbut" value="Submit">
     </form>
 ';} ?>
 
-<!-- grade entry form -->
-<?php if($grade_bool=="true"){echo '
-    <form class="flex flex-wrap justify-center items-center gap-2" method="post">
-        <label class="self-center" for="stu_id">Student ID:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="stu_id" name="stu_id" value=""><br>
-        <label class="self-center" for="subcode">Sublect code:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="subcode" name="subcode" value=""><br><br>
+<!-- options for subjects -->
+<form class="w-fit mx-auto my-4 font-bold" method="post">
+    <select name="someDropdown" id="someDropdown"> 
+        <?php
+        $sql = "SELECT * FROM prof WHERE prof_id=$prof_id";
+        $result = $conn->query($sql);
 
-        <div class="flex flex-col justify-center content-center">
-            <div>
-                <input type="radio" id="Theory" name="type" value="theory" checked onChange="getValu(this)">
-                <label class="self-center rounded h-10" for="Theory">Theory</label><br>
-            </div>
-            <div>
-                <input type="radio" id="Lab" name="type" value="lab" onChange="getValu(this)">
-                <label class="self-center rounded h-10" for="Lab">Lab</label>
-            </div>
-        </div>
+        if($result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                print('<option value ='. $row['sub_code'] .'>'.$row['sub_name']. " (" .$row['sub_code'].")" .'</option>'); 
+            } 
+        }
+        ?> 
+    </select> 
 
-        <label class="self-center" for="m1">M1:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m1" name="m1" value=""><br><br>
-        <label class="self-center" for="m2">M2:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="m2" name="m2" value=""><br><br>
-        <label class="self-center" for="m3" id="glablem3">M3:</label>
-        <input class="bg-gray-200 rounded h-10 hover:outline px-3" type="number" id="gm3" name="m3" value=""><br><br>
+    <input class="rounded w-fit justify-self-center bg-green-600 hover:bg-green-800" type="submit" name="subsele" value="Submit">
+</form>
 
-        <input class="self-center rounded" type="submit" name="grabut" value="Submit">
-    </form>
-';}?>
+<!-- droupdown button handeler -->
+<?php 
+    if(isset($_POST['subsele'])) {
+        
+        $sub__code = $_POST['someDropdown'];
+        $sql = "SELECT * FROM prof WHERE sub_code=$sub__code";
+        $result = $conn->query($sql);
+
+        if($result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                $program=$row['program'];
+                $types=$row['type'];
+                $m1=$row['m1'];
+                $m2=$row['m2'];
+                $m3=$row['m3'];
+            }
+        }
+        if($types=="lab"){
+            $che = 1;
+        }else{
+            $che = 0;
+        }
+
+        echo '
+        <form class="grid" method="post">
+            <table id="myTable" class="text-center">
+                <tr>
+                    <th class="text-center">Student ID</th>
+                    <th class="text-center">Student Name</th>
+                    <th class="text-center">M1('.$m1.')</th>
+                    <th class="text-center">M2('.$m2.')</th>
+                    <th class="text-center">M3('.$m3.')</th>
+                </tr>
+        ';
+
+        $sql = "SELECT * FROM student WHERE program='$program' ORDER BY `stu_id` ";
+        $result = $conn->query($sql);
+
+        if($result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                $temp1=$row['stu_id'];
+                $temp2=$sub__code;
+                
+                $sql11 = "SELECT * FROM result WHERE stu_id=$temp1 AND sem=$sem AND sub_code=$sub__code";
+                $result11 = $conn->query($sql11);
+                if($result11->num_rows>0){
+                    while($row11 = $result11->fetch_assoc()){
+                        echo '
+                        <tr>
+                            <td>'.$row['stu_id'].'</td>
+                            <td>'.$row['name'].'</td>
+                            <td contenteditable="true">'.$row11['m1'].'</td>
+                            <td contenteditable="true">'.$row11['m2'].'</td>
+                            <td contenteditable="true">'.$row11['m3'].'</td>
+                        </tr>   
+                        ';
+                    }
+                }else{
+                    echo '
+                    <tr>
+                        <td>'.$row['stu_id'].'</td>
+                        <td>'.$row['name'].'</td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>   
+                    ';
+                }
+            }
+        }
+        
+        echo '
+            </table>
+            <input class="rounded w-fit justify-self-center my-4 bg-green-600 hover:bg-green-800" type="submit" name="tabbut" value="Submit" onclick="checkVal('.$sub__code.', '.$che.')">
+        </form>
+        ';
+    }
+
+?>
+
+<!-- marks submit button handeler script -->
+<script type="text/javascript">
+    function checkVal(subcodeva, typ){
+
+        if(typ===1){
+            typ = "lab";
+        }else{
+            typ="theory";
+        }
+        
+        alert("sdasadasdads");
+        console.log("i was here breofaasdfa");
+        //gets table
+        var oTable = document.getElementById('myTable');
+
+        //gets rows of table
+        var rowLength = oTable.rows.length;
+
+        //loops through rows    
+        for (i = 1; i < rowLength; i++){
+
+            //gets cells of current row  
+            var oCells = oTable.rows.item(i).cells;
+
+            //gets amount of cells of current row
+            var cellLength = oCells.length;
+
+            //alert(oCells.item(0).innerHTML);
+            
+            var data = {
+                stu_id : oCells.item(0).innerHTML,
+                sem: <?php echo $sem; ?>,
+                sub_code: subcodeva,
+                type: typ,
+                m1 : oCells.item(2).innerHTML,
+                m2 : oCells.item(3).innerHTML,
+                m3 : oCells.item(4).innerHTML
+            };
+
+            fetch("test.php", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            //👇 receive the response
+            .then((response) => response.text())
+            .then((data) => alert(data));
+        }
+    }
+</script>
+
 
 <!-- list of cources/subjects the prof has  -->
 <h2>Course list</h2>
@@ -301,7 +442,7 @@
 
     if($result->num_rows>0){
         while($row = $result->fetch_assoc()){
-            echo "<tr><td>".$row['sub_name'] . "</td><td>" . $row['sub_code'] . "</td><td>" . $row['program'] . "</td><td>" . $row['type'] ."</td><td>" . $row['m1'] . "</td><td>" . $row['m2'] . "</td><td>" . $row['m3'] . "</td></tr>" ;
+            echo "<tr id=”row1”><td>".$row['sub_name'] . "</td><td>" . $row['sub_code'] . "</td><td>" . $row['program'] . "</td><td>" . $row['type'] ."</td><td>" . $row['m1'] . "</td><td>" . $row['m2'] . "</td><td>" . $row['m3'] . "</td></tr>" ;
         }
     }
     ?>
