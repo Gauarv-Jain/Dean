@@ -41,6 +41,119 @@
             echo '<script>alert("sem can only be between 1 and 8")</script>';
             exit();
         }else{
+
+            //CPI-----------------------------------------------------------------------------
+            $sq1 = "SELECT * FROM student";
+            $result1 = mysqli_query($conn, $sq1);
+            $rowCount1 = mysqli_num_rows($result1);
+            if ($rowCount1 > 0) {
+                while ($row1 = mysqli_fetch_assoc($result1)) {          
+                    $stu_id = $row1['stu_id'];
+
+                    $sq2 = "SELECT * FROM result WHERE stu_id = $stu_id AND sem = $currentsem";
+                    $result2 = mysqli_query($conn, $sq2);
+                    $rowCount2 = mysqli_num_rows($result2);
+                    if ($rowCount2 > 0) {
+                        $sum=0;
+                        while ($row2 = mysqli_fetch_assoc($result2)) { 
+                            $suum = $row2['m1'] + $row2['m2'];
+                            if($row2['m3']){
+                                $suum += $row2['m3'];
+                            }
+
+                            if(85<=$suum && $suum<=100){
+                                $myltipl = 10;
+                            }else if(75<=$suum && $suum<85){
+                                $myltipl = 9;
+                            }else if(65<=$suum && $suum<75){
+                                $myltipl = 8;
+                            }else if(55<=$suum && $suum<65){
+                                $myltipl = 7;
+                            }else if(45<=$suum && $suum<55){
+                                $myltipl = 6;
+                            }else if(30<=$suum && $suum<45){
+                                $myltipl = 4;
+                            }else if(15<=$suum && $suum<30){
+                                $myltipl = 2;
+                            }else{
+                                $myltipl = 0;
+                            }
+
+                            $sum += $myltipl;
+                        }
+                        $spi = $sum/$rowCount2;
+
+                        $sq3 = "INSERT INTO stu_spi (stu_id, sem, spi) VALUES ($stu_id, $currentsem, $spi) ON DUPLICATE KEY UPDATE stu_id=$stu_id;";
+                        if (mysqli_query($conn, $sq3)) {
+                        } else {
+                            $error = mysqli_error($conn);
+                            echo "<script>alert(Error updating record:  $error)</script>";
+                            exit();
+                        }
+                    }
+
+                }
+            } else {
+                echo "No results found for the student.";
+            }
+
+            //CPI--------------------------------------------------------------
+            $sql1 = "SELECT * FROM student";
+            $resultl1 = mysqli_query($conn, $sql1);
+            $rowCountl1 = mysqli_num_rows($resultl1);
+            if ($rowCountl1 > 0) {
+                while ($rowl1 = mysqli_fetch_assoc($resultl1)) {          
+                    $stu_id = $rowl1['stu_id'];
+
+                    $sql2 = "SELECT * FROM result WHERE stu_id = $stu_id";
+                    $resultl2 = mysqli_query($conn, $sql2);
+                    $rowCountl2 = mysqli_num_rows($resultl2);
+                    if ($rowCountl2 > 0) {
+                        $sum=0;
+                        while ($rowl2 = mysqli_fetch_assoc($resultl2)) { 
+                            $suum = $rowl2['m1'] + $rowl2['m2'];
+                            if($rowl2['m3']){
+                                $suum += $rowl2['m3'];
+                            }
+
+                            if(85<=$suum && $suum<=100){
+                                $myltipl = 10;
+                            }else if(75<=$suum && $suum<85){
+                                $myltipl = 9;
+                            }else if(65<=$suum && $suum<75){
+                                $myltipl = 8;
+                            }else if(55<=$suum && $suum<65){
+                                $myltipl = 7;
+                            }else if(45<=$suum && $suum<55){
+                                $myltipl = 6;
+                            }else if(30<=$suum && $suum<45){
+                                $myltipl = 4;
+                            }else if(15<=$suum && $suum<30){
+                                $myltipl = 2;
+                            }else{
+                                $myltipl = 0;
+                            }
+
+                            $sum += $myltipl;
+                        }
+                        $cpi = $sum/$rowCountl2;
+
+                        $sql3 = "INSERT INTO stu_cpi (stu_id, cpi) VALUES ($stu_id, $cpi) ON DUPLICATE KEY UPDATE stu_id=$stu_id;";
+                        if (mysqli_query($conn, $sql3)) {
+                        } else {
+                            $error = mysqli_error($conn);
+                            echo "<script>alert(Error updating record:  $error)</script>";
+                            exit();
+                        }
+                    }
+
+                }
+            } else {
+                echo "No results found for the student.";
+            }
+
+
+            //change the SEMESTER
             $sql = "UPDATE `admin` SET curr_sem = $semnum;";
             if (mysqli_query($conn, $sql)) {
                 echo '<script>alert("Semester updated successfully")</script>';
@@ -109,6 +222,7 @@
 <link rel="stylesheet" href="admin.css">
 
 <h2>Admin</h2>
+<h2>Current Sem = <?php echo "$currentsem" ?></h2>
 
 <!-- sem change, subject and grade toggler -->
 <form method="post">
@@ -172,3 +286,11 @@ VALUES ('46', '4', '112', 'theory', '12', '12', '33'),
 ('34', '4', '112', 'theory', '12', '12', '33'),
 ('38', '4', '112', 'theory', '12', '12', '33')
  -->
+
+<!-- Error: MySQL shutdown unexpectedly.
+This may be due to a blocked port, missing dependencies, 
+improper privileges, a crash, or a shutdown by another method.
+Press the Logs button to view error logs and check
+the Windows Event Viewer for more clues
+If you need more help, copy and post this
+entire log window on the forums -->

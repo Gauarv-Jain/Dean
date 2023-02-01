@@ -67,19 +67,15 @@ entire log window on the forums
 //tables
 CREATE TABLE `dean`.`student` (`stu_id` INT(8) NOT NULL , `name` VARCHAR(40) NOT NULL , `program` ENUM( 'B.Tech', 'M.Tech','MCA','PhD') NOT NULL , PRIMARY KEY (`stu_id`)) ENGINE = InnoDB;
 
-CREATE TABLE `dean`.`result_theory` (`stu_id` INT NOT NULL , `sem` INT NOT NULL , `sub_code` INT NOT NULL , `m1` INT NULL , `m2` INT NULL , `m3` INT NULL , PRIMARY KEY (`stu_id`, `sem`, `sub_code`)) ENGINE = InnoDB;
-
-CREATE TABLE `dean`.`result_lab` (`stu_id` INT NOT NULL , `sem` INT NOT NULL , `sub_code` INT NOT NULL , `m1` INT NULL , `m2` INT NULL , PRIMARY KEY (`stu_id`, `sem`, `sub_code`)) ENGINE = InnoDB;
-
 CREATE TABLE `dean`.`prof` (`prof_id` INT NOT NULL , `sub_name` VARCHAR(40) NOT NULL , `sub_code` INT NOT NULL , `program` ENUM('B.Tech', 'M.Tech','MCA','PhD') NOT NULL , `type` ENUM('lab', 'theory') NOT NULL ) ENGINE = InnoDB;
-
-CREATE TABLE `dean`.`subject_lab` (`sub_code` INT NOT NULL , `m1` INT NOT NULL , `m2` INT NOT NULL , PRIMARY KEY (`sub_code`)) ENGINE = InnoDB;
-
-CREATE TABLE `dean`.`subject_theory` (`sub_code` INT NOT NULL , `m1` INT NOT NULL , `m2` INT NOT NULL , `m3` INT NOT NULL , PRIMARY KEY (`sub_code`)) ENGINE = InnoDB;
 
 CREATE TABLE `dean`.`admin` (`curr_sem` INT NOT NULL , `course_entry` ENUM('true','false') NOT NULL , `grade_entry` ENUM('true','false') NOT NULL ) ENGINE = InnoDB;
 
 CREATE TABLE `dean`.`result` (`stu_id` INT NOT NULL , `sem` INT NOT NULL , `sub_code` INT NOT NULL , `type` ENUM('lab','theory') NOT NULL , `m1` INT NOT NULL , `m2` INT NOT NULL , `m3` INT NULL DEFAULT NULL ) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`stu_spi` (`stu_id` INT NOT NULL , `sem` INT NOT NULL , `spi` DOUBLE NOT NULL , PRIMARY KEY (`stu_id`)) ENGINE = InnoDB;
+
+CREATE TABLE `dean`.`stu_cpi` (`stu_id` INT NOT NULL , `cpi` DOUBLE NOT NULL , PRIMARY KEY (`stu_id`)) ENGINE = InnoDB;
 
 INSERT INTO student (stu_id, name, program)
     VALUES (1, 'John Smith', 'B.Tech'),
@@ -115,87 +111,6 @@ INSERT INTO student (stu_id, name, program)
         (53, 'Joshua Allen', 'MCA')
 
 
-INSERT INTO result_theory (stu_id, sem, sub_code, m1, m2, m3)
-VALUES (3, 1, 101, 30, 40, 20),
-       (3, 1, 102, 25, 20, 30),
-       (3, 2, 201, 35, 25, 20),
-       (3, 2, 202, 40, 30, 25),
-       (4, 1, 101, 20, 25, 35),
-       (4, 1, 102, 15, 20, 25),
-       (4, 2, 201, 25, 20, 15),
-       (4, 2, 202, 30, 25, 20);
-
-
-
-INSERT INTO result_theory (stu_id, sem, sub_code, m1, m2, m3)
-VALUES (5, 1, 101, 15, 20, 25),
-       (5, 1, 102, 20, 25, 30),
-       (5, 2, 201, 25, 30, 35),
-       (5, 2, 202, 30, 35, 40),
-       (6, 1, 101, 35, 40, 25),
-       (6, 1, 102, 40, 25, 30),
-       (6, 2, 201, 25, 30, 35),
-       (6, 2, 202, 30, 35, 40),
-       (7, 1, 101, 20, 25, 35),
-       (7, 1, 102, 25, 30, 40),
-       (7, 2, 201, 30, 35, 25),
-       (7, 2, 202, 35, 40, 30),
-       (8, 1, 101, 25, 30, 25),
-       (8, 1, 102, 30, 25, 30),
-       (8, 2, 201, 35, 30, 25),
-       (8, 2, 202, 40, 35, 30),
-       (9, 1, 101, 20, 25, 30),
-       (9, 1, 102, 25, 30, 35),
-       (9, 2, 201, 30, 35, 20),
-       (9, 2, 202, 35, 20, 25),
-       (10, 1, 101, 25, 20, 25),
-       (10, 1, 102, 30, 25, 20),
-       (10, 2, 201, 35, 30, 25),
-       (10, 2, 202, 40, 35, 30),
-       (11, 1, 101, 15, 20, 25),
-       (11, 1, 102, 20, 25, 30),
-       (11, 2, 201, 25, 30, 35),
-       (11, 2, 202, 30, 35, 40);
-
-
-INSERT INTO result_lab (stu_id, sem, sub_code, m1, m2)
-VALUES (1, 1, 101, 80, 15),
-       (1, 1, 102, 25, 45),
-       (1, 2, 201, 35, 50),
-       (1, 2, 202, 40, 30),
-       (2, 1, 101, 70, 25),
-       (2, 1, 102, 30, 40),
-       (2, 2, 201, 60, 20),
-       (2, 2, 202, 30, 25),
-       (3, 1, 101, 25, 50),
-       (3, 1, 102, 30, 40),
-       (3, 2, 201, 35, 30),
-       (3, 2, 202, 40, 25),
-       (4, 1, 101, 20, 35),
-       (4, 1, 102, 25, 30),
-       (4, 2, 201, 30, 25),
-       (4, 2, 202, 35, 20),
-       (5, 1, 101, 25, 30),
-       (5, 1, 102, 30, 25),
-       (5, 2, 201, 35, 20),
-       (5, 2, 202, 40, 15),
-       (6, 1, 101, 30, 25),
-       (6, 1, 102, 25, 30),
-       (6, 2, 201, 20, 35),
-       (6, 2, 202, 15, 40),
-       (7, 1, 101, 25, 30),
-       (7, 1, 102, 30, 25),
-       (7, 2, 201, 35, 20),
-       (7, 2, 202, 40, 15),
-       (8, 1, 101, 15, 40),
-       (8, 1, 102, 20, 35),
-       (8, 2, 201, 25, 30),
-       (8, 2, 202, 30, 25),
-       (9, 1, 101, 35, 20),
-       (9, 1, 102, 40, 15),
-       (9, 2, 201, 25, 30)
-
-
 INSERT INTO prof (prof_id, sub_name, sub_code, program, type)
 VALUES (1, 'Data Structures', 101, 'B.Tech', 'theory'),
        (2, 'Algorithms', 102, 'B.Tech', 'theory'),
@@ -219,50 +134,6 @@ VALUES (1, 'Data Structures', 101, 'B.Tech', 'theory'),
        (20, 'Lab- Computer Networks', 202, 'B.Tech', 'lab'),
        (21, 'Lab- Database Systems', 301, 'B.Tech', 'lab'),
        (22, 'Lab- Software Engineering', 302, 'B.Tech', 'lab')
-
-
-INSERT INTO result_lab (stu_id, sem, sub_code, m1, m2)
-VALUES (15, 1, 101, NULL, NULL),
-       (15, 1, 102, NULL, NULL),
-       (15, 2, 201, NULL, NULL),
-       (15, 2, 202, NULL, NULL),
-       (25, 1, 101, NULL, NULL),
-       (25, 1, 102, NULL, NULL),
-       (25, 2, 201, NULL, NULL),
-       (25, 2, 202, NULL, NULL),
-       (35, 1, 101, NULL, NULL),
-       (35, 1, 102, NULL, NULL),
-       (35, 2, 201, NULL, NULL),
-       (35, 2, 202, NULL, NULL),
-       (45, 1, 101, NULL, NULL),
-       (45, 1, 102, NULL, NULL),
-       (45, 2, 201, NULL, NULL),
-       (45, 2, 202, NULL, NULL),
-       (55, 1, 101, NULL, NULL),
-       (55, 1, 102, NULL, NULL)
-
-
-INSERT INTO result_theory (stu_id, sem, sub_code, m1, m2, m3)
-VALUES (16, 1, 101, NULL, NULL, NULL),
-       (16, 1, 102, NULL, NULL, NULL),
-       (16, 2, 201, NULL, NULL, NULL),
-       (16, 2, 202, NULL, NULL, NULL),
-       (26, 1, 101, NULL, NULL, NULL),
-       (26, 1, 102, NULL, NULL, NULL),
-       (26, 2, 201, NULL, NULL, NULL),
-       (26, 2, 202, NULL, NULL, NULL),
-       (36, 1, 101, NULL, NULL, NULL),
-       (36, 1, 102, NULL, NULL, NULL),
-       (36, 2, 201, NULL, NULL, NULL),
-       (36, 2, 202, NULL, NULL, NULL),
-       (46, 1, 101, NULL, NULL, NULL),
-       (46, 1, 102, NULL, NULL, NULL),
-       (46, 2, 201, NULL, NULL, NULL),
-       (46, 2, 202, NULL, NULL, NULL),
-       (56, 1, 101, NULL, NULL, NULL),
-       (56, 1, 102, NULL, NULL, NULL),
-       (56, 2, 201, NULL, NULL, NULL),
-       (56, 2, 202, NULL, NULL, NULL)
 
 
 INSERT INTO result (stu_id, sem, sub_code, type, m1, m2, m3)
@@ -352,6 +223,7 @@ INSERT INTO `prof` (`prof_id`, `sub_name`, `sub_code`, `program`, `type`) VALUES
 (15, 'Software Engineering', 115, 'MCA', 'theory');
 
 
+
 <!-- grade entry form-->
 <?php if($grade_bool=="true"){echo '
     <form class="grid font-bold" method="post">
@@ -389,7 +261,3 @@ INSERT INTO `prof` (`prof_id`, `sub_name`, `sub_code`, `program`, `type`) VALUES
         <input class="rounded w-fit justify-self-center bg-green-600 hover:bg-green-800" type="submit" name="grabut" value="Submit">
     </form>
 ';}?> 
-
-
-sub_code: '<?php echo $GLOBALS['sub__code'] ; ?>',
-                type: '<?php echo $GLOBALS['type'] ; ?>',
