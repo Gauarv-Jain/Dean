@@ -273,21 +273,23 @@
 ';} ?>
 
 <!-- options for subjects -->
-<form class="w-fit mx-auto my-4 font-bold" method="post">
-    <select name="someDropdown" id="someDropdown"> 
+<form class="w-fit mx-auto my-4 font-bold <?php if($grade_bool=="false"){echo "hidden";} ?> " method="post">
+    
+    <div class="text-3xl text-center mb-6">Grade Entry</div>
+    <select class="rounded outline outline-1 outline-slate-100 p-2" name="someDropdown" id="someDropdown"> 
         <?php
-        $sql = "SELECT * FROM prof WHERE prof_id=$prof_id";
+        $sql = "SELECT * FROM prof WHERE prof_id=$prof_id AND sem=$sem";
         $result = $conn->query($sql);
 
         if($result->num_rows>0){
             while($row = $result->fetch_assoc()){
-                print('<option value ='. $row['sub_code'] .'>'.$row['sub_name']. " (" .$row['sub_code'].")" .'</option>'); 
+                print('<option ' . ((isset($_POST['subsele']) && $row['sub_code'] == $_POST['someDropdown']) ? "selected" : "") . ' value ='. $row['sub_code'] .'>'.$row['sub_name']. " (" .$row['sub_code'].")" .'</option>'); 
             } 
         }
         ?> 
     </select> 
 
-    <input class="rounded w-fit justify-self-center bg-green-600 hover:bg-green-800" type="submit" name="subsele" value="Submit">
+    <input class="rounded w-fit justify-self-center bg-green-600 hover:bg-green-800" type="submit" name="subsele" value="SELECT">
 </form>
 
 <!-- droupdown button handeler -->
@@ -315,7 +317,7 @@
 
         echo '
         <form class="grid" method="post">
-            <table id="myTable" class="text-center">
+            <table id="myTable" class="text-center rounded">
                 <tr>
                     <th class="text-center">Student ID</th>
                     <th class="text-center">Student Name</th>
@@ -367,7 +369,6 @@
         </form>
         ';
     }
-
 ?>
 
 <!-- marks submit button handeler script -->
@@ -380,8 +381,6 @@
             typ="theory";
         }
         
-        alert("sdasadasdads");
-        console.log("i was here breofaasdfa");
         //gets table
         var oTable = document.getElementById('myTable');
 
@@ -423,10 +422,9 @@
     }
 </script>
 
-
 <!-- list of cources/subjects the prof has  -->
 <h2>Course list</h2>
-<table>
+<table class="rounded">
     <tr>
         <th>Subject Name</th>
         <th>Subject Code</th>
@@ -437,7 +435,7 @@
         <th>M3</th>
     </tr>
     <?php 
-    $sql = "SELECT * FROM prof WHERE prof_id=$prof_id";
+    $sql = "SELECT * FROM prof WHERE prof_id=$prof_id AND sem=$sem";
     $result = $conn->query($sql);
 
     if($result->num_rows>0){

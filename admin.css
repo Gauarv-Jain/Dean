@@ -12,13 +12,11 @@ form {
 
 label {
     font-size: 1.2em;
-    margin-bottom: 10px;
 }
 
 input[type="number"] {
     padding: 8px;
     font-size: 1.2em;
-    margin-bottom: 20px;
 }
 
 input[type="submit"] {
@@ -28,12 +26,11 @@ input[type="submit"] {
     color: white;
     border: none;
     cursor: pointer;
-    margin-bottom: 10px;
 }
 
 /* table ka css */
 table {
-    width: 80%;
+    width: 10%;
     margin: auto; /* center the table */
     border-collapse: collapse;
     background-color: #333; /* dark theme */

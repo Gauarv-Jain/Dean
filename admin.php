@@ -42,7 +42,7 @@
             exit();
         }else{
 
-            //CPI-----------------------------------------------------------------------------
+            //SPI-----------------------------------------------------------------------------
             $sq1 = "SELECT * FROM student";
             $result1 = mysqli_query($conn, $sq1);
             $rowCount1 = mysqli_num_rows($result1);
@@ -83,7 +83,7 @@
                         }
                         $spi = $sum/$rowCount2;
 
-                        $sq3 = "INSERT INTO stu_spi (stu_id, sem, spi) VALUES ($stu_id, $currentsem, $spi) ON DUPLICATE KEY UPDATE stu_id=$stu_id;";
+                        $sq3 = "INSERT INTO stu_spi (stu_id, sem, spi) VALUES ($stu_id, $currentsem, $spi) ON DUPLICATE KEY UPDATE spi=$spi;";
                         if (mysqli_query($conn, $sq3)) {
                         } else {
                             $error = mysqli_error($conn);
@@ -138,7 +138,7 @@
                         }
                         $cpi = $sum/$rowCountl2;
 
-                        $sql3 = "INSERT INTO stu_cpi (stu_id, cpi) VALUES ($stu_id, $cpi) ON DUPLICATE KEY UPDATE stu_id=$stu_id;";
+                        $sql3 = "INSERT INTO stu_cpi (stu_id, cpi) VALUES ($stu_id, $cpi) ON DUPLICATE KEY UPDATE cpi=$cpi;";
                         if (mysqli_query($conn, $sql3)) {
                         } else {
                             $error = mysqli_error($conn);
@@ -221,49 +221,57 @@
 
 <link rel="stylesheet" href="admin.css">
 
-<h2>Admin</h2>
+<h2>Admin Page</h2>
 <h2>Current Sem = <?php echo "$currentsem" ?></h2>
 
 <!-- sem change, subject and grade toggler -->
 <form method="post">
 
-    <label for="sem">Change sem:</label>
-    <input class="bg-gray-200 rounded hover:outline " type="number" id="sem" name="sem">
-    <input class="bg-green-600 hover:bg-green-800" type="submit" name="sembut" value="Submit"><br>
+    <div class="flex items-center gap-3 m-4">
+        <label class="" for="sem">Change sem:</label>
+        <input class="bg-gray-200 rounded hover:outline " type="number" id="sem" name="sem">
+        <input class="rounded bg-green-600 hover:bg-green-800" type="submit" name="sembut" value="Submit"><br>
+    </div>
+
+    <div class="flex items-center gap-3 m-4">
+
+        <input class="rounded <?php
+        if($cource_bool=="false"){
+            echo "bg-green-600 hover:bg-green-800";
+        }else{
+            echo "bg-red-600 hover:bg-red-800";
+        }
+        ?>" type="submit" name="courcebut" value="<?php echo $cource_entry;?>"/><br>
+        
+        
+        <input class="rounded <?php
+        if($grade_bool=="false"){
+            echo "bg-green-600 hover:bg-green-800";
+        }else{
+            echo "bg-red-600 hover:bg-red-800";
+        }
+        ?>" type="submit" name="gradebut" value="<?php echo $grade_entry;?>"/><br>
     
-    <input class="<?php
-    if($cource_bool=="false"){
-        echo "bg-green-600 hover:bg-green-800";
-    }else{
-        echo "bg-red-600 hover:bg-red-800";
-    }
-    ?>" type="submit" name="courcebut" value="<?php echo $cource_entry;?>"/><br>
-    
-    
-    <input class="<?php
-    if($grade_bool=="false"){
-        echo "bg-green-600 hover:bg-green-800";
-    }else{
-        echo "bg-red-600 hover:bg-red-800";
-    }
-    ?>" type="submit" name="gradebut" value="<?php echo $grade_entry;?>"/><br>
+    </div>
 
 </form>
 
 <!-- Prof who have not entered the marks -->
-<h2>Prof who have not entered the marks</h2>
-<table>
+<h2>Prof who have not entered the marks yet:</h2>
+<table class="text-center rounded mb-4">
     <tr>
-        <th>Prof Code</th>
+        <th class="text-center">Prof Code</th>
     </tr>
     <?php 
-    $sql = "SELECT DISTINCT P.prof_ID FROM prof as P WHERE (SELECT COUNT(*) FROM result WHERE sem=$currentsem AND sub_code = P.sub_code ) != (SELECT COUNT(*) FROM student WHERE program = P.program)";
+    $sql = "SELECT DISTINCT P.prof_ID FROM prof as P WHERE (SELECT COUNT(*) FROM result WHERE sem=$currentsem AND sub_code = P.sub_code AND P.sem=$currentsem) != (SELECT COUNT(*) FROM student WHERE program = P.program AND P.sem=$currentsem)";
     $result = $conn->query($sql);
 
     if($result->num_rows>0){
         while($row = $result->fetch_assoc()){
             echo "<tr><td>". $row['prof_ID'] . "</td></tr>" ;
         }
+    }else{
+        echo "<tr><td> No Prof Left </td></tr>";
     }
     ?>
 </table>

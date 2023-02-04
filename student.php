@@ -38,72 +38,124 @@
 
 <!-- transcript -->
 <h2>Student transcript</h2>
-<?php 
-    echo "
-    <table>
-    <h2> SEM : 1 </h2>
-    <tr>
-        <th>Sem</th>
-        <th>Subject Code</th>
-        <th>Type</th>
-        <th>Grade</th>
-    </tr>
-    ";
+<div class="rounded outline m-6">
+    <div class="grid grid-cols-2 p-6">
+        <?php 
+            echo '
+            <div>
+                <div class="text-xl font-bold text-center"> SEM : 1 </div>
+                <table class="rounded">
+                    <tr>
+                        <th>Subject Code</th>
+                        <th>Type</th>
+                        <th>Grade</th>
+                    </tr>
+            ';
 
-    $sql = "SELECT * FROM result WHERE stu_id = $stu_id ORDER BY sem";
+            $sql = "SELECT * FROM result WHERE stu_id = $stu_id ORDER BY sem";
 
-    $result = $conn->query($sql);
+            $result = $conn->query($sql);
 
-    $prev_sem=1;
+            $prev_sem=1;
 
-    if($result->num_rows>0){
-        while($row = $result->fetch_assoc()){
-            $m1 = $row['m1'];
-            $m2 = $row['m2'];
-            $m3 = $row['m3'];
-            $sum = $m1 + $m2 + $m3;
+            if($result->num_rows>0){
+                while($row = $result->fetch_assoc()){
+                    $m1 = $row['m1'];
+                    $m2 = $row['m2'];
+                    $m3 = $row['m3'];
+                    $sum = $m1 + $m2 + $m3;
 
-            if(85<=$sum && $sum<=100){
-                $grade = "A+";
-            }else if(75<=$sum && $sum<85){
-                $grade = "A";
-            }else if(65<=$sum && $sum<75){
-                $grade = "B+";
-            }else if(55<=$sum && $sum<65){
-                $grade = "B";
-            }else if(45<=$sum && $sum<55){
-                $grade = "C";
-            }else if(30<=$sum && $sum<45){
-                $grade = "D";
-            }else if(15<=$sum && $sum<30){
-                $grade = "E";
+                    if(85<=$sum && $sum<=100){
+                        $grade = "A+";
+                    }else if(75<=$sum && $sum<85){
+                        $grade = "A";
+                    }else if(65<=$sum && $sum<75){
+                        $grade = "B+";
+                    }else if(55<=$sum && $sum<65){
+                        $grade = "B";
+                    }else if(45<=$sum && $sum<55){
+                        $grade = "C";
+                    }else if(30<=$sum && $sum<45){
+                        $grade = "D";
+                    }else if(15<=$sum && $sum<30){
+                        $grade = "E";
+                    }else{
+                        $grade = "F";
+                    }
+
+                    if($prev_sem!=$row['sem']){
+
+                        $sqql = "SELECT * FROM stu_spi WHERE stu_id =$stu_id AND sem=$prev_sem";
+                        $rus = $conn->query($sqql);
+                        if($rus->num_rows>0){
+                            while($rowr = $rus->fetch_assoc()){
+                                $spiii = $rowr['spi'];
+                            } 
+                        }
+
+                        $prev_sem=$row['sem'];
+                        if($prev_sem != $sem){
+                            echo "
+                            </table>
+                            <div class='text-xl font-bold text-center'>SPI : $spiii</div>
+                            </div>
+                            <div>
+                            <div class='text-xl font-bold text-center'> SEM : $prev_sem </div>
+                            <table>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Type</th>
+                                <th>Grade</th>
+                            </tr>
+                            ";
+                        }
+                    }
+
+                    if($prev_sem != $sem){
+                        echo "<tr><td>" . $row['sub_code'] . "</td><td>" . $row['type'] . "</td><td>" . $grade . "</td></tr>" ;
+                    }
+                }
+            }
+
+            $sqqql = "SELECT * FROM stu_spi WHERE stu_id =$stu_id AND sem=$prev_sem";
+            $ruus = $conn->query($sqqql);
+            if($ruus->num_rows>0){
+                while($rowwr = $ruus->fetch_assoc()){
+                    $spiiii = $rowwr['spi'];
+                } 
             }else{
-                $grade = "F";
+                $prev_sem-=1;
+                $sqqqll = "SELECT * FROM stu_spi WHERE stu_id =$stu_id AND sem=$prev_sem";
+                $ruuss = $conn->query($sqqqll);
+                if($ruuss->num_rows>0){
+                    while($roowwr = $ruuss->fetch_assoc()){
+                        $spiiii = $roowwr['spi'];
+                    } 
+                }
             }
 
-            if($prev_sem!=$row['sem']){
-                $prev_sem=$row['sem'];
-                echo "
-                </table>
-                <table>
-                <h2> SEM : $prev_sem </h2>
-                <tr>
-                    <th>Sem</th>
-                    <th>Subject Code</th>
-                    <th>Type</th>
-                    <th>Grade</th>
-                </tr>
-                ";
-            }
-            echo "<tr><td>".$row['sem'] . "</td><td>" . $row['sub_code'] . "</td><td>" . $row['type'] . "</td><td>" . $grade . "</td></tr>" ;
+            echo "</table> 
+            <div class='text-xl font-bold text-center'>SPI : $spiiii</div>
+            </div>";
+        ?>
+    </div>
+
+    <!-- CPI div -->
+    <?php
+        $sl = "SELECT * FROM stu_cpi WHERE stu_id =$stu_id ";
+        $rs = $conn->query($sl);
+        if($rs->num_rows>0){
+            while($rr = $rs->fetch_assoc()){
+                $cppi = $rr['cpi'];
+            } 
         }
-    }
-    echo "</table>";
-?>
+        echo "<div class='text-4xl font-bold text-center'>CPI : $cppi</div>";
+    ?>
+</div>
 
 <!-- the cources the student is enrolled in  -->
 <h2 class="mt-2">Cources Enrolled IN</h2>
-<table>
+<table class="rounded">
     <tr>
         <th>Subject Name</th>
         <th>Subject Code</th>
@@ -111,7 +163,7 @@
         <th>Prof_id</th>
     </tr>
     <?php 
-    $sql = "SELECT * FROM prof WHERE program='$program'";
+    $sql = "SELECT * FROM prof WHERE program='$program' AND sem=$sem";
     $result = $conn->query($sql);
 
     if($result->num_rows>0){
